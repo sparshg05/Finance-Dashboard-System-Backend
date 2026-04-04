@@ -1,0 +1,33 @@
+{
+    "name": "express-auth-api",
+    "version": "1.0.0",
+    "description": "Production-ready Express.js API with PostgreSQL, Prisma, JWT Auth",
+    "main": "src/server.js",
+    "scripts": {
+        "start": "node src/server.js",
+        "dev": "nodemon src/server.js",
+        "db:migrate": "prisma migrate dev",
+        "db:generate": "prisma generate",
+        "db:studio": "prisma studio",
+        "db:push": "prisma db push"
+    },
+    "dependencies": {
+        "@prisma/adapter-pg": "^7.6.0",
+        "@prisma/client": "^7.6.0",
+        "bcryptjs": "^2.4.3",
+        "cors": "^2.8.5",
+        "dotenv": "^16.4.1",
+        "express": "^4.18.2",
+        "helmet": "^7.1.0",
+        "jsonwebtoken": "^9.0.2",
+        "morgan": "^1.10.0",
+        "pg": "^8.13.3"
+    },
+    "devDependencies": {
+        "@types/node": "^22.10.0",
+        "ts-node": "^10.9.2",
+        "nodemon": "^3.0.3",
+        "prisma": "^7.6.0",
+        "typescript": "^5.7.0"
+    }
+}

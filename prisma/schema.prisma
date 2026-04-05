@@ -7,6 +7,8 @@ datasource db {
   provider = "postgresql"
 }
 
+// ─── Enums ────────────────────────────────────────────────────────────────────
+
 enum Role {
   ADMIN
   ANALYST
@@ -18,13 +20,39 @@ enum Status {
   INACTIVE
 }
 
+enum TransactionType {
+  INCOME
+  EXPENSE
+}
+
+// ─── Models ───────────────────────────────────────────────────────────────────
+
 model User {
-  id        String   @id @default(uuid())
-  email     String   @unique
-  password  String
-  role      Role     @default(VIEWER)
-  status    Status   @default(ACTIVE)
-  createdAt DateTime @default(now())
+  id               String            @id @default(uuid())
+  email            String            @unique
+  password         String
+  role             Role              @default(VIEWER)
+  status           Status            @default(ACTIVE)
+  createdAt        DateTime          @default(now())
+  financialRecords FinancialRecord[]
 
   @@map("users")
+}
+
+model FinancialRecord {
+  id        String          @id @default(uuid())
+  userId    String
+  user      User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  amount    Float
+  type      TransactionType
+  category  String
+  date      DateTime
+  notes     String?
+  createdAt DateTime        @default(now())
+
+  @@index([userId])
+  @@index([type])
+  @@index([category])
+  @@index([date])
+  @@map("financial_records")
 }

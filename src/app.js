@@ -3,10 +3,11 @@ const cors = require('cors');
 const helmet = require('helmet');
 const morgan = require('morgan');
 
-const authRoutes = require('./routes/auth.routes');
-const userRoutes = require('./routes/user.routes');
-const errorHandler = require('./middleware/errorHandler');
-const AppError = require('./utils/AppError');
+const authRoutes        = require('./routes/auth.routes');
+const userRoutes        = require('./routes/user.routes');
+const transactionRoutes = require('./routes/transaction.routes');
+const errorHandler      = require('./middleware/errorHandler');
+const AppError          = require('./utils/AppError');
 
 const app = express();
 
@@ -26,8 +27,9 @@ app.get('/health', (req, res) => {
 });
 
 // ─── API Routes ──────────────────────────────────────────────────────────────
-app.use('/api/v1/auth', authRoutes);
-app.use('/api/v1/users', userRoutes);
+app.use('/api/v1/auth',         authRoutes);
+app.use('/api/v1/users',        userRoutes);
+app.use('/api/v1/transactions', transactionRoutes);
 
 // ─── 404 Handler ─────────────────────────────────────────────────────────────
 app.all('*', (req, res, next) => {

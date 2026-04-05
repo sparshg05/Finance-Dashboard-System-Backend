@@ -1,9 +1,8 @@
 const prisma = require('../config/prisma');
 const AppError = require('../utils/AppError');
 
-/**
- * Fetches the currently authenticated user's full profile.
- */
+
+//Fetches the currently authenticated user's full profile.
 const getMe = async (userId) => {
   const user = await prisma.user.findUnique({
     where: { id: userId },

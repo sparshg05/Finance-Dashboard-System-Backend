@@ -4,27 +4,23 @@ const prisma = require('../config/prisma');
 const AppError = require('../utils/AppError');
 const config = require('../config/env');
 
-/**
- * Generates a signed JWT token containing userId and role.
- */
+
+//Generates a signed JWT token containing userId and role.
 const generateToken = (userId, role) => {
   return jwt.sign({ userId, role }, config.jwt.secret, {
     expiresIn: config.jwt.expiresIn,
   });
 };
 
-/**
- * Strips sensitive fields from a user object before sending to client.
- */
+
+//Strips sensitive fields from a user object before sending to client.
 const sanitizeUser = (user) => {
   const { password, ...safeUser } = user;
   return safeUser;
 };
 
-/**
- * Registers a new user.
- * Throws if email is already taken.
- */
+
+//Registers a new user.
 const signup = async ({ email, password, role }) => {
   // Check for existing user manually for a clear error message
   const existing = await prisma.user.findUnique({ where: { email } });
@@ -48,10 +44,8 @@ const signup = async ({ email, password, role }) => {
   return { user: sanitizeUser(user), token };
 };
 
-/**
- * Authenticates a user with email/password.
- * Throws if credentials are invalid or account is inactive.
- */
+
+//Authenticates a user with email/password.
 const login = async ({ email, password }) => {
   // Fetch user including password for comparison
   const user = await prisma.user.findUnique({ where: { email } });

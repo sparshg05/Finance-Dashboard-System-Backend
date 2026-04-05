@@ -4,10 +4,8 @@ const AppError = require('../utils/AppError');
 // Valid enum values — used for validation
 const VALID_TYPES = ['INCOME', 'EXPENSE'];
 
-/**
- * Validates and normalises the fields for create / update.
- * Throws AppError on any invalid input.
- */
+
+//Validates and normalises the fields for create / update.
 const validateFields = ({ amount, type, category, date }, requireAll = true) => {
   const errors = [];
 
@@ -49,9 +47,8 @@ const validateFields = ({ amount, type, category, date }, requireAll = true) => 
   }
 };
 
-/**
- * Creates a new financial record owned by the authenticated user.
- */
+
+//Creates a new financial record owned by the authenticated user.
 const createTransaction = async (userId, body) => {
   const { amount, type, category, date, notes } = body;
 
@@ -71,12 +68,8 @@ const createTransaction = async (userId, body) => {
   return record;
 };
 
-/**
- * Returns a paginated, filtered list of financial records for the user.
- *
- * Filters: type, category, startDate, endDate
- * Pagination: page (default 1), limit (default 10, max 100)
- */
+
+//Returns a paginated, filtered list of financial records for the user.
 const getTransactions = async (userId, query) => {
   const {
     type,
@@ -147,10 +140,8 @@ const getTransactions = async (userId, query) => {
   };
 };
 
-/**
- * Returns a single financial record by id.
- * Throws 404 if not found, 403 if it belongs to a different user.
- */
+
+//Returns a single financial record by id.
 const getTransactionById = async (userId, recordId) => {
   const record = await prisma.financialRecord.findUnique({
     where: { id: recordId },
@@ -167,10 +158,8 @@ const getTransactionById = async (userId, recordId) => {
   return record;
 };
 
-/**
- * Updates an existing financial record.
- * Only updates fields that are explicitly provided (partial update).
- */
+
+//Updates an existing financial record.
 const updateTransaction = async (userId, recordId, body) => {
   // Ownership check first
   await getTransactionById(userId, recordId);
@@ -195,10 +184,8 @@ const updateTransaction = async (userId, recordId, body) => {
   return updated;
 };
 
-/**
- * Deletes a financial record.
- * Throws 403 if it belongs to a different user.
- */
+
+//Deletes a financial record.
 const deleteTransaction = async (userId, recordId) => {
   // Ownership check
   await getTransactionById(userId, recordId);

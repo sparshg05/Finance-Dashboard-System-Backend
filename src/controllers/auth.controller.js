@@ -2,10 +2,8 @@ const authService = require('../services/auth.service');
 const catchAsync = require('../utils/catchAsync');
 const { sendSuccess } = require('../utils/response');
 
-/**
- * POST /auth/signup
- * Creates a new user account.
- */
+
+//Creates a new user account.
 const signup = catchAsync(async (req, res) => {
   const { email, password, role } = req.body;
 
@@ -22,10 +20,8 @@ const signup = catchAsync(async (req, res) => {
   sendSuccess(res, 201, { user, token }, 'Account created successfully.');
 });
 
-/**
- * POST /auth/login
- * Authenticates a user and returns a JWT token.
- */
+
+//Authenticates a user and returns a JWT token.
 const login = catchAsync(async (req, res) => {
   const { email, password } = req.body;
 

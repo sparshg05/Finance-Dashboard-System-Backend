@@ -35,10 +35,9 @@ const authenticate = catchAsync(async (req, res, next) => {
   next();
 });
 
-/**
- * Role-based access control middleware factory.
- * Usage: authorize('ADMIN', 'ANALYST')
- */
+
+//Role-based access control middleware factory.
+//authorize('ADMIN', 'ANALYST')
 const authorize = (...roles) => {
   return (req, res, next) => {
     if (!roles.includes(req.user.role)) {

@@ -13,13 +13,6 @@ const router = Router();
 // Every transaction route requires a valid JWT
 router.use(authenticate);
 
-/**
- * Route → authenticate → roleMiddleware → [validate] → controller
- *
- * ADMIN   : full CRUD
- * ANALYST : read-only (GET)
- * VIEWER  : no access (blocked at roleMiddleware)
- */
 
 // ── Read (ANALYST + ADMIN) ────────────────────────────────────────────────────
 router.get(

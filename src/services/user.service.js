@@ -5,9 +5,8 @@ const SAFE_USER_SELECT = {
   id: true, email: true, role: true, status: true, createdAt: true,
 };
 
-/**
- * Returns the authenticated user's own profile.
- */
+
+//Returns the authenticated user's own profile.
 const getMe = async (userId) => {
   const user = await prisma.user.findUnique({
     where:  { id: userId },
@@ -17,10 +16,8 @@ const getMe = async (userId) => {
   return user;
 };
 
-/**
- * Returns all users (ADMIN only).
- * Supports optional ?status=ACTIVE|INACTIVE and ?role=ADMIN|ANALYST|VIEWER filters.
- */
+
+//Returns all users (ADMIN only).
 const getAllUsers = async (query = {}) => {
   const { status, role } = query;
   const where = {};
@@ -35,9 +32,8 @@ const getAllUsers = async (query = {}) => {
   return users;
 };
 
-/**
- * Activates or deactivates a user account (ADMIN only).
- */
+
+//ctivates or deactivates a user account (ADMIN only).
 const updateUserStatus = async (targetId, status) => {
   const valid = ['ACTIVE', 'INACTIVE'];
   if (!valid.includes(status?.toUpperCase())) {

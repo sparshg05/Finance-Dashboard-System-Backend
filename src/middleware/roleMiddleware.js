@@ -27,14 +27,13 @@ const roleMiddleware = (...allowedRolesOrPermissions) => {
 
   return (req, res, next) => {
     if (!req.user) {
-      // Defensive guard — should never happen if authenticate ran first
       return next(new AppError('Not authenticated.', 401));
     }
 
     const { role } = req.user;
     const [first] = allowedRolesOrPermissions;
 
-    // ── Permission-based check (argument contains ':') ──────────────────────
+    // ── Permission-based check (argument contains ':')
     if (first.includes(':')) {
       const permission = first; // single permission string
       if (!hasPermission(role, permission)) {
@@ -48,7 +47,7 @@ const roleMiddleware = (...allowedRolesOrPermissions) => {
       return next();
     }
 
-    // ── Role-based check (plain role names) ─────────────────────────────────
+    // ── Role-based check (plain role names) 
     const allowedRoles = allowedRolesOrPermissions.map((r) => r.toUpperCase());
     if (!allowedRoles.includes(role)) {
       return next(

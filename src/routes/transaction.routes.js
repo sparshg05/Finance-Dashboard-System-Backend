@@ -1,16 +1,58 @@
 const { Router } = require('express');
 const transactionController = require('../controllers/transaction.controller');
-const { authenticate } = require('../middleware/auth');
+const { authenticate }      = require('../middleware/auth');
+const roleMiddleware         = require('../middleware/roleMiddleware');
+const {
+  validate,
+  createTransactionSchema,
+  updateTransactionSchema,
+} = require('../middleware/validate');
 
 const router = Router();
 
-// All transaction routes require a valid JWT
+// Every transaction route requires a valid JWT
 router.use(authenticate);
 
-router.post('/',     transactionController.createTransaction);
-router.get('/',      transactionController.getTransactions);
-router.get('/:id',   transactionController.getTransactionById);
-router.put('/:id',   transactionController.updateTransaction);
-router.delete('/:id',transactionController.deleteTransaction);
+/**
+ * Route → authenticate → roleMiddleware → [validate] → controller
+ *
+ * ADMIN   : full CRUD
+ * ANALYST : read-only (GET)
+ * VIEWER  : no access (blocked at roleMiddleware)
+ */
+
+// ── Read (ANALYST + ADMIN) ────────────────────────────────────────────────────
+router.get(
+  '/',
+  roleMiddleware('transactions:read'),
+  transactionController.getTransactions
+);
+
+router.get(
+  '/:id',
+  roleMiddleware('transactions:read'),
+  transactionController.getTransactionById
+);
+
+// ── Write (ADMIN only) ────────────────────────────────────────────────────────
+router.post(
+  '/',
+  roleMiddleware('transactions:create'),
+  validate(createTransactionSchema),
+  transactionController.createTransaction
+);
+
+router.put(
+  '/:id',
+  roleMiddleware('transactions:update'),
+  validate(updateTransactionSchema),
+  transactionController.updateTransaction
+);
+
+router.delete(
+  '/:id',
+  roleMiddleware('transactions:delete'),
+  transactionController.deleteTransaction
+);
 
 module.exports = router;
